@@ -149,3 +149,51 @@ UNION
 SELECT city FROM suppliers;
 
 
+
+SELECT * FROM customers;
+SELECT * FROM events;
+SELECT * FROM products;
+SELECT * FROM supplies;
+
+
+SELECT COUNT(customer_id) AS count, country, city
+FROM customers
+GROUP BY country;
+
+
+
+
+CREATE TABLE shippers (
+	shipper_id INT NOT NULL AUTO_INCREMENT,
+    shipper_name VARCHAR(255) NOT NULL,
+    company VARCHAR(255),
+    
+    PRIMARY KEY (shipper_id)
+);
+
+CREATE TABLE orders (
+	order_id INT NOT NULL AUTO_INCREMENT,
+    shipper_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    order_time DATETIME NOT NULL,
+    
+    PRIMARY KEY (order_id),
+    FOREIGN KEY (shipper_id) REFERENCES shippers(shipper_id)
+);
+
+ALTER TABLE orders
+ADD FOREIGN KEY (customer_id) REFERENCES customers(customer_id);
+
+
+
+
+SELECT * FROM shippers;
+SELECT * FROM customers;
+SELECT * FROM orders;
+
+
+
+SELECT s.shipper_name, COUNT(o.order_id) AS orders_count 
+FROM orders AS o
+LEFT JOIN shippers AS s ON s.shipper_id = o.shipper_id
+GROUP BY s.shipper_id;
